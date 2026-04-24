@@ -1,0 +1,106 @@
+[
+  {
+    "id": "1",
+    "code": "LLV-REL-001",
+    "name": "Virgen de Luján",
+    "image": "/images/placeholder.jpg",
+    "category": "llaveros",
+    "subcategory": "religiosos"
+  },
+  {
+    "id": "2",
+    "code": "LLV-REL-002",
+    "name": "San Expedito",
+    "image": "/images/placeholder.jpg",
+    "category": "llaveros",
+    "subcategory": "religiosos"
+  },
+  {
+    "id": "3",
+    "code": "LLV-REL-003",
+    "name": "Cruz de Malta",
+    "image": "/images/placeholder.jpg",
+    "category": "llaveros",
+    "subcategory": "religiosos"
+  },
+  {
+    "id": "4",
+    "code": "LLV-INF-001",
+    "name": "Dinosaurio Rex",
+    "image": "/images/placeholder.jpg",
+    "category": "llaveros",
+    "subcategory": "infantiles"
+  },
+  {
+    "id": "5",
+    "code": "LLV-INF-002",
+    "name": "Unicornio",
+    "image": "/images/placeholder.jpg",
+    "category": "llaveros",
+    "subcategory": "infantiles"
+  },
+  {
+    "id": "6",
+    "code": "LLV-DEP-001",
+    "name": "Pelota de Fútbol",
+    "image": "/images/placeholder.jpg",
+    "category": "llaveros",
+    "subcategory": "deportivos"
+  },
+  {
+    "id": "7",
+    "code": "LLV-DEP-002",
+    "name": "Escudo River Plate",
+    "image": "/images/placeholder.jpg",
+    "category": "llaveros",
+    "subcategory": "deportivos"
+  },
+  {
+    "id": "8",
+    "code": "PIN-REL-001",
+    "name": "Virgen del Carmen",
+    "image": "/images/placeholder.jpg",
+    "category": "pines",
+    "subcategory": "religiosos"
+  },
+  {
+    "id": "9",
+    "code": "PIN-REL-002",
+    "name": "Ángel de la Guarda",
+    "image": "/images/placeholder.jpg",
+    "category": "pines",
+    "subcategory": "religiosos"
+  },
+  {
+    "id": "10",
+    "code": "PIN-INF-001",
+    "name": "Gatito Kawaii",
+    "image": "/images/placeholder.jpg",
+    "category": "pines",
+    "subcategory": "infantiles"
+  },
+  {
+    "id": "11",
+    "code": "PIN-INF-002",
+    "name": "Osito Tierno",
+    "image": "/images/placeholder.jpg",
+    "category": "pines",
+    "subcategory": "infantiles"
+  },
+  {
+    "id": "12",
+    "code": "PIN-DEP-001",
+    "name": "Escudo Boca Juniors",
+    "image": "/images/placeholder.jpg",
+    "category": "pines",
+    "subcategory": "deportivos"
+  },
+  {
+    "id": "13",
+    "code": "PIN-DEP-002",
+    "name": "Casco de Rugby",
+    "image": "/images/placeholder.jpg",
+    "category": "pines",
+    "subcategory": "deportivos"
+  }
+]
