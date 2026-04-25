@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Catálogo de Diseños",
+  title: "Catálogo de Diseños | Souvenir Exacto",
   description: "Explorá y seleccioná diseños de llaveros y pines",
 };
 

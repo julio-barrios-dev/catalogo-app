@@ -14,6 +14,7 @@ interface SelectionStore {
   selected: SelectedDesign[];
   toggle: (design: Omit<SelectedDesign, "variation">) => void;
   setVariation: (id: string, variation: string) => void;
+  remove: (id: string) => void;
   clear: () => void;
   isSelected: (id: string) => boolean;
 }
@@ -37,6 +38,7 @@ export const useSelectionStore = create<SelectionStore>()(
           ),
         });
       },
+      remove: (id) => set({ selected: get().selected.filter((d) => d.id !== id) }),
       clear: () => set({ selected: [] }),
       isSelected: (id) => get().selected.some((d) => d.id === id),
     }),

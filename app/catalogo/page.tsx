@@ -1,5 +1,7 @@
+import { Suspense } from "react";
 import { supabase, Design } from "@/lib/supabase";
 import CatalogoClient from "./CatalogoClient";
+import CatalogoSkeleton from "./CatalogoSkeleton";
 
 async function getDesigns(): Promise<Design[]> {
   const { data, error } = await supabase
@@ -30,8 +32,15 @@ async function getDesigns(): Promise<Design[]> {
   }));
 }
 
-export default async function CatalogoPage() {
+async function CatalogoData() {
   const designs = await getDesigns();
-
   return <CatalogoClient designs={designs} />;
+}
+
+export default function CatalogoPage() {
+  return (
+    <Suspense fallback={<CatalogoSkeleton />}>
+      <CatalogoData />
+    </Suspense>
+  );
 }
