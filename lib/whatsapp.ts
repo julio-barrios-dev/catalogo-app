@@ -6,7 +6,7 @@ const CATEGORY_EMOJI: Record<string, string> = {
 };
 
 const WHATSAPP_NUMBER =
-  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "5491137781024";
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "5491178957481";
 
 function capitalize(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1);

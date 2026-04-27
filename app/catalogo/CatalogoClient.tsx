@@ -85,7 +85,7 @@ export default function CatalogoClient({ designs }: { designs: Design[] }) {
             para vos.
           </p>
           <a
-            href={`https://wa.me/5491137781024?text=${encodeURIComponent("Hola! Me gustaría consultar sobre un diseño personalizado desde cero.")}`}
+            href={`https://wa.me/5491178957481?text=${encodeURIComponent("Hola! Me gustaría consultar sobre un diseño personalizado desde cero.")}`}
             target="_blank"
             rel="noopener noreferrer"
             className="shrink-0 inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 active:bg-green-700 text-white font-semibold text-sm rounded-full px-4 py-2 transition-colors"
@@ -138,7 +138,7 @@ export default function CatalogoClient({ designs }: { designs: Design[] }) {
       {/* Floating custom-design WhatsApp button — only when no designs selected */}
       {selectionCount === 0 && (
         <a
-          href={`https://wa.me/5491137781024?text=${encodeURIComponent("Hola! Me gustaría consultar sobre un diseño personalizado desde cero.")}`}
+          href={`https://wa.me/5491178957481?text=${encodeURIComponent("Hola! Me gustaría consultar sobre un diseño personalizado desde cero.")}`}
           target="_blank"
           rel="noopener noreferrer"
           className="fixed bottom-6 right-6 z-20 bg-green-500 hover:bg-green-600 active:bg-green-700 text-white rounded-full px-4 py-3 shadow-xl transition-all duration-200 hover:scale-105 active:scale-95 flex items-center gap-2"
