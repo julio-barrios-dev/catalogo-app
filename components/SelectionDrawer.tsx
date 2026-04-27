@@ -89,7 +89,7 @@ export default function SelectionDrawer({ open, onClose }: Props) {
                 <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-gray-100 shrink-0">
 
                   <Image
-                    src={getImageUrl(null)}
+                    src={getImageUrl(d.image_path)}
                     alt={d.name}
                     fill
                     className="object-cover"
@@ -111,7 +111,7 @@ export default function SelectionDrawer({ open, onClose }: Props) {
                     placeholder="Ej: sin fondo, color rojo..."
                     value={d.variation}
                     onChange={(e) => setVariation(d.id, e.target.value)}
-                    className="w-full min-h-9 text-xs border border-gray-200 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-300"
+                    className="w-full min-h-9 text-xs text-gray-800 border border-gray-200 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
                   />
                 </div>
                 <button

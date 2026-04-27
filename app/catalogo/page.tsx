@@ -11,8 +11,8 @@ async function getDesigns(): Promise<Design[]> {
       code,
       name,
       image_path,
-      categories!products_category_id_fkey ( slug ),
-      subcategories!products_subcategory_id_fkey ( slug )
+      categories!products_category_id_fkey ( slug, name ),
+      subcategories!products_subcategory_id_fkey ( slug, name )
     `)
     .eq("active", true)
     .order("code");
@@ -28,7 +28,9 @@ async function getDesigns(): Promise<Design[]> {
     name: row.name,
     image_path: row.image_path,
     category: row.categories?.slug ?? "",
+    category_name: row.categories?.name ?? "",
     subcategory: row.subcategories?.slug ?? "",
+    subcategory_name: row.subcategories?.name ?? "",
   }));
 }
 

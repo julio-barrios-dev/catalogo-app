@@ -7,6 +7,7 @@ export interface SelectedDesign {
   name: string;
   category: string;
   subcategory: string;
+  image_path: string | null;
   variation: string;
 }
 

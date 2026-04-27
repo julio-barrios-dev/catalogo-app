@@ -19,5 +19,7 @@ export interface Design {
   name: string;
   image_path: string | null;
   category: string;
+  category_name: string;
   subcategory: string;
+  subcategory_name: string;
 }

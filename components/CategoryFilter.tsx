@@ -2,7 +2,9 @@
 
 interface Props {
   categories: string[];
+  categoryNames: Record<string, string>;
   subcategories: string[];
+  subcategoryNames: Record<string, string>;
   activeCategory: string;
   activeSubcategory: string;
   onCategoryChange: (c: string) => void;
@@ -96,7 +98,9 @@ function FilterRow({
 
 export default function CategoryFilter({
   categories,
+  categoryNames,
   subcategories,
+  subcategoryNames,
   activeCategory,
   activeSubcategory,
   onCategoryChange,
@@ -121,7 +125,7 @@ export default function CategoryFilter({
                 <ThemeChip
                   key={sub}
                   icon={cfg?.icon ?? "🏷️"}
-                  label={cfg?.label ?? capitalize(sub)}
+                  label={subcategoryNames[sub] || cfg?.label || capitalize(sub)}
                   active={activeSubcategory === sub}
                   onClick={() => onSubcategoryChange(sub)}
                 />
@@ -142,7 +146,7 @@ export default function CategoryFilter({
             return (
               <ProductChip
                 key={cat}
-                label={cfg?.label ?? capitalize(cat)}
+                label={categoryNames[cat] || cfg?.label || capitalize(cat)}
                 active={activeCategory === cat}
                 onClick={() => onCategoryChange(cat)}
               />
