@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Design } from "@/lib/supabase";
 import { useSelectionStore } from "@/lib/store";
 import CategoryFilter from "@/components/CategoryFilter";
@@ -45,15 +45,22 @@ export default function CatalogoClient({ designs }: { designs: Design[] }) {
     return map;
   }, [designs, activeCategory]);
 
+  const [shuffledDesigns, setShuffledDesigns] = useState(designs);
+
+  useEffect(() => {
+    setShuffledDesigns([...designs].sort(() => Math.random() - 0.5));
+  }, [designs]);
+
   const filteredDesigns = useMemo(() => {
+    const source = activeCategory === "all" ? shuffledDesigns : designs;
     const query = searchQuery.trim().toLowerCase();
-    return designs.filter((d) => {
+    return source.filter((d) => {
       const catMatch = activeCategory === "all" || d.category === activeCategory;
       const subMatch = activeSubcategory === "all" || d.subcategory === activeSubcategory;
       const searchMatch = !query || d.name.toLowerCase().includes(query) || d.code.toLowerCase().includes(query);
       return catMatch && subMatch && searchMatch;
     });
-  }, [designs, activeCategory, activeSubcategory, searchQuery]);
+  }, [designs, shuffledDesigns, activeCategory, activeSubcategory, searchQuery]);
 
   const handleCategoryChange = (cat: string) => {
     setActiveCategory(cat);
