@@ -108,26 +108,47 @@ export default function CatalogoClient({ designs }: { designs: Design[] }) {
         </div>
       </header>
 
-      <CategoryFilter
-        categories={categories}
-        categoryNames={categoryNames}
-        subcategories={availableSubcategories}
-        subcategoryNames={subcategoryNames}
-        activeCategory={activeCategory}
-        activeSubcategory={activeSubcategory}
-        onCategoryChange={handleCategoryChange}
-        onSubcategoryChange={setActiveSubcategory}
-      />
+      {/* Mobile filters */}
+      <div className="lg:hidden">
+        <CategoryFilter
+          categories={categories}
+          categoryNames={categoryNames}
+          subcategories={availableSubcategories}
+          subcategoryNames={subcategoryNames}
+          activeCategory={activeCategory}
+          activeSubcategory={activeSubcategory}
+          onCategoryChange={handleCategoryChange}
+          onSubcategoryChange={setActiveSubcategory}
+        />
+      </div>
 
-      <div className="pb-28">
-        <div className="max-w-6xl mx-auto px-4 pt-3 pb-1">
-          <p className="text-xs text-gray-400">
-            {filteredDesigns.length === 0
-              ? "Sin resultados para estos filtros"
-              : `${filteredDesigns.length} diseño${filteredDesigns.length !== 1 ? "s" : ""} disponible${filteredDesigns.length !== 1 ? "s" : ""}`}
-          </p>
+      <div className="lg:flex lg:items-start lg:max-w-6xl lg:mx-auto">
+        {/* Desktop sidebar */}
+        <aside className="hidden lg:block lg:w-72 lg:shrink-0 lg:sticky lg:top-0 lg:self-start lg:border-r lg:border-gray-100 lg:min-h-screen">
+          <CategoryFilter
+            categories={categories}
+            categoryNames={categoryNames}
+            subcategories={availableSubcategories}
+            subcategoryNames={subcategoryNames}
+            activeCategory={activeCategory}
+            activeSubcategory={activeSubcategory}
+            onCategoryChange={handleCategoryChange}
+            onSubcategoryChange={setActiveSubcategory}
+            variant="vertical"
+          />
+        </aside>
+
+        {/* Grid */}
+        <div className="flex-1 min-w-0 pb-28">
+          <div className="px-4 pt-3 pb-1">
+            <p className="text-xs text-gray-400">
+              {filteredDesigns.length === 0
+                ? "Sin resultados para estos filtros"
+                : `${filteredDesigns.length} diseño${filteredDesigns.length !== 1 ? "s" : ""} disponible${filteredDesigns.length !== 1 ? "s" : ""}`}
+            </p>
+          </div>
+          <DesignGrid designs={filteredDesigns} />
         </div>
-        <DesignGrid designs={filteredDesigns} />
       </div>
 
       <SelectionDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />

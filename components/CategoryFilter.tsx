@@ -1,5 +1,7 @@
 "use client";
 
+import { useRef, useCallback } from "react";
+
 // ── Inline SVG icons — consistent stroke-2 style ──────────────────────────
 
 function IconGrid() {
@@ -80,25 +82,26 @@ interface Props {
   activeSubcategory: string;
   onCategoryChange: (c: string) => void;
   onSubcategoryChange: (s: string) => void;
+  variant?: "horizontal" | "vertical";
 }
 
 function capitalize(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-// ── Chip components ───────────────────────────────────────────────────────
+// ── Chip ──────────────────────────────────────────────────────────────────
 
 function Chip({
-  icon, label, active, onClick,
+  icon, label, active, onClick, fullWidth = false,
 }: {
-  icon?: React.ReactNode; label: string; active: boolean; onClick: () => void;
+  icon?: React.ReactNode; label: string; active: boolean; onClick: () => void; fullWidth?: boolean;
 }) {
   return (
     <button
       onClick={onClick}
       style={{ touchAction: "manipulation" }}
       aria-pressed={active}
-      className={`shrink-0 h-9 px-3.5 rounded-full border-2 flex items-center gap-1.5 text-xs font-semibold transition-all duration-150 cursor-pointer select-none ${
+      className={`h-9 px-3.5 rounded-full border-2 flex items-center gap-1.5 text-xs font-semibold transition-all duration-150 cursor-pointer select-none ${fullWidth ? "w-full" : "shrink-0"} ${
         active
           ? "bg-gray-900 border-gray-900 text-white shadow-sm"
           : "bg-white border-gray-200 text-gray-600 hover:border-gray-400 hover:text-gray-800 active:scale-95"
@@ -110,20 +113,69 @@ function Chip({
   );
 }
 
-// ── Filter row ────────────────────────────────────────────────────────────
+// ── Filter row — horizontal (mobile) ─────────────────────────────────────
 
-function FilterRow({ label, children }: { label: string; children: React.ReactNode }) {
+function FilterRowHorizontal({ label, children }: { label: string; children: React.ReactNode }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
+
+  const onMouseDown = useCallback((e: React.MouseEvent) => {
+    isDragging.current = true;
+    startX.current = e.pageX - (scrollRef.current?.offsetLeft ?? 0);
+    scrollLeft.current = scrollRef.current?.scrollLeft ?? 0;
+    if (scrollRef.current) scrollRef.current.style.cursor = "grabbing";
+  }, []);
+
+  const onMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!isDragging.current || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    scrollRef.current.scrollLeft = scrollLeft.current - (x - startX.current);
+  }, []);
+
+  const stopDrag = useCallback(() => {
+    isDragging.current = false;
+    if (scrollRef.current) scrollRef.current.style.cursor = "grab";
+  }, []);
+
+  const onWheel = useCallback((e: React.WheelEvent) => {
+    if (!scrollRef.current) return;
+    e.preventDefault();
+    scrollRef.current.scrollLeft += e.deltaY + e.deltaX;
+  }, []);
+
   return (
     <div className="flex items-center gap-3">
       <span className="shrink-0 text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap w-16">
         {label}
       </span>
       <div className="relative flex-1 min-w-0">
-        <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-0.5">
+        <div
+          ref={scrollRef}
+          className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-0.5 cursor-grab select-none"
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={stopDrag}
+          onMouseLeave={stopDrag}
+          onWheel={onWheel}
+        >
           {children}
         </div>
-        <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-8 bg-linear-to-l from-white to-transparent pointer-events-none" />
       </div>
+    </div>
+  );
+}
+
+// ── Filter row — vertical (desktop sidebar) ───────────────────────────────
+
+function FilterRowVertical({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">{label}</p>
+      <div className="flex flex-wrap gap-2">{children}</div>
     </div>
   );
 }
@@ -139,55 +191,71 @@ export default function CategoryFilter({
   activeSubcategory,
   onCategoryChange,
   onSubcategoryChange,
+  variant = "horizontal",
 }: Props) {
-  return (
-    <div className="sticky top-0 z-10 bg-white border-b border-gray-100 shadow-sm">
-      <div className="max-w-5xl mx-auto px-4 py-3 flex flex-col gap-2.5">
+  const FilterRow = variant === "vertical" ? FilterRowVertical : FilterRowHorizontal;
+  const fullWidth = false;
 
-        {subcategories.length > 0 && (
-          <FilterRow label="Temática">
-            <Chip
-              icon={SUBCATEGORY_CONFIG["all"].icon}
-              label={SUBCATEGORY_CONFIG["all"].label}
-              active={activeSubcategory === "all"}
-              onClick={() => onSubcategoryChange("all")}
-            />
-            {subcategories.map((sub) => {
-              const cfg = SUBCATEGORY_CONFIG[sub];
-              return (
-                <Chip
-                  key={sub}
-                  icon={cfg?.icon}
-                  label={subcategoryNames[sub] || cfg?.label || capitalize(sub)}
-                  active={activeSubcategory === sub}
-                  onClick={() => onSubcategoryChange(sub)}
-                />
-              );
-            })}
-          </FilterRow>
-        )}
-
-        <FilterRow label="Producto">
+  const content = (
+    <>
+      {subcategories.length > 0 && (
+        <FilterRow label="Temática">
           <Chip
-            icon={CATEGORY_CONFIG["all"].icon}
-            label={CATEGORY_CONFIG["all"].label}
-            active={activeCategory === "all"}
-            onClick={() => onCategoryChange("all")}
+            icon={SUBCATEGORY_CONFIG["all"].icon}
+            label={SUBCATEGORY_CONFIG["all"].label}
+            active={activeSubcategory === "all"}
+            onClick={() => onSubcategoryChange("all")}
+            fullWidth={fullWidth}
           />
-          {categories.map((cat) => {
-            const cfg = CATEGORY_CONFIG[cat];
+          {subcategories.map((sub) => {
+            const cfg = SUBCATEGORY_CONFIG[sub];
             return (
               <Chip
-                key={cat}
+                key={sub}
                 icon={cfg?.icon}
-                label={categoryNames[cat] || cfg?.label || capitalize(cat)}
-                active={activeCategory === cat}
-                onClick={() => onCategoryChange(cat)}
+                label={subcategoryNames[sub] || cfg?.label || capitalize(sub)}
+                active={activeSubcategory === sub}
+                onClick={() => onSubcategoryChange(sub)}
+                fullWidth={fullWidth}
               />
             );
           })}
         </FilterRow>
+      )}
 
+      <FilterRow label="Producto">
+        <Chip
+          icon={CATEGORY_CONFIG["all"].icon}
+          label={CATEGORY_CONFIG["all"].label}
+          active={activeCategory === "all"}
+          onClick={() => onCategoryChange("all")}
+          fullWidth={fullWidth}
+        />
+        {categories.map((cat) => {
+          const cfg = CATEGORY_CONFIG[cat];
+          return (
+            <Chip
+              key={cat}
+              icon={cfg?.icon}
+              label={categoryNames[cat] || cfg?.label || capitalize(cat)}
+              active={activeCategory === cat}
+              onClick={() => onCategoryChange(cat)}
+              fullWidth={fullWidth}
+            />
+          );
+        })}
+      </FilterRow>
+    </>
+  );
+
+  if (variant === "vertical") {
+    return <div className="flex flex-col gap-6 px-3 pt-6">{content}</div>;
+  }
+
+  return (
+    <div className="sticky top-0 z-10 bg-white border-b border-gray-100 shadow-sm">
+      <div className="max-w-5xl mx-auto px-4 py-3 flex flex-col gap-2.5">
+        {content}
       </div>
     </div>
   );
