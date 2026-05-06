@@ -108,20 +108,6 @@ export default function CatalogoClient({ designs }: { designs: Design[] }) {
         </div>
       </header>
 
-      {/* Mobile filters */}
-      <div className="lg:hidden">
-        <CategoryFilter
-          categories={categories}
-          categoryNames={categoryNames}
-          subcategories={availableSubcategories}
-          subcategoryNames={subcategoryNames}
-          activeCategory={activeCategory}
-          activeSubcategory={activeSubcategory}
-          onCategoryChange={handleCategoryChange}
-          onSubcategoryChange={setActiveSubcategory}
-        />
-      </div>
-
       <div className="lg:flex lg:items-start lg:max-w-6xl lg:mx-auto">
         {/* Desktop sidebar */}
         <aside className="hidden lg:block lg:w-72 lg:shrink-0 lg:sticky lg:top-0 lg:self-start lg:border-r lg:border-gray-100 lg:min-h-screen">
@@ -138,16 +124,31 @@ export default function CatalogoClient({ designs }: { designs: Design[] }) {
           />
         </aside>
 
-        {/* Grid */}
-        <div className="flex-1 min-w-0 pb-28">
-          <div className="px-4 pt-3 pb-1">
-            <p className="text-xs text-gray-400">
-              {filteredDesigns.length === 0
-                ? "Sin resultados para estos filtros"
-                : `${filteredDesigns.length} diseño${filteredDesigns.length !== 1 ? "s" : ""} disponible${filteredDesigns.length !== 1 ? "s" : ""}`}
-            </p>
+        {/* Mobile filter + Grid */}
+        <div className="flex-1 min-w-0">
+          {/* Mobile filters — sin wrapper para que sticky funcione correctamente */}
+          <CategoryFilter
+            categories={categories}
+            categoryNames={categoryNames}
+            subcategories={availableSubcategories}
+            subcategoryNames={subcategoryNames}
+            activeCategory={activeCategory}
+            activeSubcategory={activeSubcategory}
+            onCategoryChange={handleCategoryChange}
+            onSubcategoryChange={setActiveSubcategory}
+            className="lg:hidden"
+          />
+
+          <div className="pb-28">
+            <div className="px-4 pt-3 pb-1">
+              <p className="text-xs text-gray-400">
+                {filteredDesigns.length === 0
+                  ? "Sin resultados para estos filtros"
+                  : `${filteredDesigns.length} diseño${filteredDesigns.length !== 1 ? "s" : ""} disponible${filteredDesigns.length !== 1 ? "s" : ""}`}
+              </p>
+            </div>
+            <DesignGrid designs={filteredDesigns} />
           </div>
-          <DesignGrid designs={filteredDesigns} />
         </div>
       </div>
 

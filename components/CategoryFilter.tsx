@@ -83,6 +83,7 @@ interface Props {
   onCategoryChange: (c: string) => void;
   onSubcategoryChange: (s: string) => void;
   variant?: "horizontal" | "vertical";
+  className?: string;
 }
 
 function capitalize(s: string) {
@@ -192,6 +193,7 @@ export default function CategoryFilter({
   onCategoryChange,
   onSubcategoryChange,
   variant = "horizontal",
+  className,
 }: Props) {
   const FilterRow = variant === "vertical" ? FilterRowVertical : FilterRowHorizontal;
   const fullWidth = false;
@@ -249,11 +251,11 @@ export default function CategoryFilter({
   );
 
   if (variant === "vertical") {
-    return <div className="flex flex-col gap-6 px-3 pt-6">{content}</div>;
+    return <div className={`flex flex-col gap-6 px-3 pt-6 ${className ?? ""}`}>{content}</div>;
   }
 
   return (
-    <div className="sticky top-0 z-10 bg-white border-b border-gray-100 shadow-sm">
+    <div className={`sticky top-0 z-10 bg-white border-b border-gray-100 shadow-sm ${className ?? ""}`}>
       <div className="max-w-5xl mx-auto px-4 py-3 flex flex-col gap-2.5">
         {content}
       </div>
